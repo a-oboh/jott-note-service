@@ -1,0 +1,41 @@
+{
+    "compilerOptions": {
+      "lib": ["es5", "es6"],
+      "target": "es5",
+      "module": "commonjs",
+      "rootDir": "./src",
+      "baseUrl": "./src",
+      "outDir": "./dist",
+      "esModuleInterop": true,
+      // "strict": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "moduleResolution": "node",
+      "sourceMap": true,
+      "strictPropertyInitialization": false,
+      "typeRoots": ["./src/types", "./node_modules/@types"],
+      "paths": {
+        "@controllers/*": ["src/controllers/*"],
+        "@util/*": ["src/util/*"],
+        "@index": ["./src/index"],
+      },
+    },
+  }
+  
+  // {
+  //   "compilerOptions": {
+  //      "lib": [
+  //         "es5",
+  //         "es6"
+  //      ],
+  //      "target": "es5",
+  //      "module": "commonjs",
+  //      "moduleResolution": "node",
+  //      "esModuleInterop": true,
+  //      "outDir": "./build",
+  //      "emitDecoratorMetadata": true,
+  //      "experimentalDecorators": true,
+  //      "sourceMap": true
+  //   }
+  // }
+  
