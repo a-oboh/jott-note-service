@@ -19,6 +19,11 @@ export class User {
   @Column({
     unique: true,
   })
+  mainId: string;
+
+  @Column({
+    unique: true,
+  })
   email: string;
 
   @Column()
@@ -27,10 +32,10 @@ export class User {
   @Column()
   lastName: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   photoUrl: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   password: string;
 
   @Column({

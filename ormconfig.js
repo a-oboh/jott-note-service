@@ -14,18 +14,18 @@ const connectionConfig = {
   database: process.env.MYSQL_DATABASE,
 };
 
-// const defaultConfig = {
-//   ...connectionConfig,
-//   name: "default",
-//   synchronize: false,
-//   logging: false,
-//   entities: [rootDir + "/entities/**/*{.ts,.js}"],
-//   migrations: [rootDir + "/migrations/**/*{.ts,.js}"],
-//   cli: {
-//     entitiesDir: rootDir + "/entities",
-//     migrationsDir: rootDir + "/migrations",
-//   },
-// };
+const defaultConfig = {
+  ...connectionConfig,
+  name: "default",
+  synchronize: false,
+  logging: false,
+  entities: [rootDir + "/entities/**/*{.ts,.js}"],
+  migrations: [rootDir + "/migrations/**/*{.ts,.js}"],
+  cli: {
+    entitiesDir: rootDir + "/entities",
+    migrationsDir: rootDir + "/migrations",
+  },
+};
 
 const devConfig = {
   ...connectionConfig,
@@ -65,7 +65,7 @@ const testConfig = {
   migrations: ["src/migrations/**/*{.ts,.js}"],
   migrationsRun: false,
   cli: {
-    entitiesDir:"src/entities",
+    entitiesDir: "src/entities",
     migrationsDir: "src/migrations",
   },
 };

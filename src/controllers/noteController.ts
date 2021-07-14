@@ -9,9 +9,19 @@ import paginate from "../util/paginate";
 import { bodyEmpty } from "util/util";
 
 export class NoteController {
-  userService: UserService = new UserService();
-  noteService: NoteService = new NoteService();
-  redisService: RedisService = new RedisService();
+  constructor(
+    noteService: NoteService,
+    userService: UserService,
+    redisService: RedisService
+  ) {
+    this.noteService = noteService;
+    this.userService = userService;
+    this.redisService = redisService;
+  }
+
+  userService: UserService;
+  noteService: NoteService;
+  redisService: RedisService;
 
   getNotes = async (req: Request, res: Response, next: NextFunction) => {
     try {

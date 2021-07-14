@@ -1,5 +1,5 @@
 import { User } from "../../entities/user";
-import { getRepository, Repository } from "typeorm";
+import { getRepository, Repository, getManager, getConnection } from "typeorm";
 import { Note } from "../../entities/note";
 import { HttpError } from "../../util/httpError";
 
@@ -7,6 +7,10 @@ export class NoteService {
   // constructor(noteRepo: Repository<Note>) {
   //   this.noteRepo = noteRepo;
   // }
+
+  constructor(noteRepository: Repository<Note>) {
+    this.noteRepo = noteRepository;
+  }
 
   private noteRepo: Repository<Note>;
 
@@ -72,7 +76,7 @@ export class NoteService {
 
       const newNote = await noteRepo.save(note);
 
-      return (newNote as unknown) as Note;
+      return newNote as unknown as Note;
     } catch (e) {
       throw new HttpError(e.message, 500);
     }
@@ -82,9 +86,13 @@ export class NoteService {
     const noteRepo = getRepository(Note);
 
     try {
+      await getManager().transaction("SERIALIZABLE", async (entityManager) => {
+        entityManager.save(data);
+      });
+
       const newNote = await noteRepo.save(data);
 
-      return (newNote as unknown) as Note;
+      return newNote as unknown as Note;
     } catch (e) {
       throw new HttpError(e.message, 500);
     }

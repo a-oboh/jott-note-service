@@ -40,7 +40,11 @@ class NotFoundError extends HttpError {
 const handleError = (err: any, res: Response, next: NextFunction) => {
   const { statusCode = 500, message, stack } = err;
 
-  logger.error(err);
+  if (statusCode >= 400 && statusCode < 500) {
+    logger.warn(err);
+  } else {
+    logger.error(err);
+  }
 
  return next(res.status(statusCode).json({
     status: "error",

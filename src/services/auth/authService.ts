@@ -1,120 +1,46 @@
 import { UserService } from "../userService";
-import jwt from "jsonwebtoken";
 import { User } from "../../entities/user";
-import { HttpError } from "../../util/httpError";
-import * as bcrypt from "bcryptjs";
-import { currentConfig as config } from "config/index";
 
-class Payload {
-  id: string;
-  firebaseId?: string;
+interface EventUser {
+  mainId: string;
+  email: string;
   firstName: string;
   lastName: string;
-}
-
-interface firebasePayload {
-  firebaseUid: string;
-  name: string;
-  email: string;
-  photoUrl: string;
+  photoUrl: string | null;
+  firebaseUuid: string | null;
+  confirmationToken: string | null;
+  resetCode: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
 }
 
 export class AuthService {
-  private userService: UserService = new UserService();
-
-  createToken(payload: Payload): string {
-    return jwt.sign(payload, process.env.JWT_SECRET as jwt.Secret, {
-      expiresIn: config.app.jwtLife,
-      subject: payload.id,
-    });
+  constructor(userSvc: UserService) {
+    this.userService = userSvc;
   }
+  private userService: UserService;
 
-  async register(data: User): Promise<any> {
+  async replicateUserEvent(userData: EventUser): Promise<User> {
     try {
-      await data.hashPassword(data.password);
-      const user = await this.userService.createUser(data);
+      const newUser = new User();
 
-      user.password = undefined;
+      newUser.mainId = userData.mainId;
+      newUser.email = userData.email;
+      newUser.firstName = userData.firstName;
+      newUser.lastName = userData.lastName;
+      newUser.photoUrl = userData.photoUrl;
+      newUser.firebaseUuid = userData.firebaseUuid;
+      newUser.confirmationToken = userData.confirmationToken;
+      newUser.resetCode = userData.resetCode;
+      newUser.createdAt = userData.createdAt;
+      newUser.updatedAt = userData.updatedAt;
 
-      const token = this.createToken({
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-      });
+      const user = await this.userService.createUser(newUser);
 
-      return { user, access_token: token };
+      return user;
     } catch (err) {
-      if ((err.message as string).includes("Duplicate")) {
-        throw new HttpError(
-          `user with email ${data.email} already exists`,
-          400
-        );
-      }
-      throw new HttpError(err.message, 500);
-    }
-  }
-
-  async login(email: string, password: string): Promise<any> {
-    const user = await this.userService.getUserByEmail(email);
-
-    if (user) {
-      const passwordMatch = await bcrypt.compare(password, user.password);
-
-      if (passwordMatch) {
-        const token = this.createToken({
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-        });
-
-        user.password = undefined;
-
-        return { user, access_token: token };
-      } else {
-        throw new HttpError("wrong credentials provided", 400);
-      }
-    } else {
-      throw new HttpError("wrong credentials provided", 400);
-    }
-  }
-
-  async getUser(email: string): Promise<any> {
-    const user = await this.userService.getUserByEmail(email);
-
-    if (user.firebaseUuid) {
-      const token = this.createToken({
-        id: user.id,
-        firebaseId: user.firebaseUuid,
-        firstName: user.firstName,
-        lastName: user.lastName,
-      });
-
-      return { user, access_token: token };
-    } else {
-      throw new HttpError("wrong credentials provided", 400);
-    }
-  }
-
-  async firebaseRegister(data: User): Promise<any> {
-    try {
-      const user = await this.userService.createUser(data);
-
-      const token = this.createToken({
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-      });
-
-      return { user, access_token: token };
-    } catch (err) {
-      if ((err.message as string).includes("Duplicate")) {
-        throw new HttpError(
-          `user with email ${data.email} already exists`,
-          400
-        );
-      }
-
-      throw new HttpError(err.message, 500);
+      throw err;
     }
   }
 }

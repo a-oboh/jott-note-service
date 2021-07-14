@@ -1,4 +1,4 @@
-import { User } from "entity/user";
+import { User } from "entities/user";
 import {
   createConnection,
   getConnection,
@@ -50,7 +50,7 @@ const createTestUsers = async (): Promise<User> => {
     await userRepository.save(user);
 
     console.log("saved user");
-    logger.info('Saved user')
+    logger.debug('Saved user')
 
     resolve(user);
   });

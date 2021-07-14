@@ -43,7 +43,7 @@ export class UserService {
 
       return (savedUser as unknown) as User;
     } catch (err) {
-      throw new HttpError(err.message, 500);
+      throw err;
     }
   };
 }

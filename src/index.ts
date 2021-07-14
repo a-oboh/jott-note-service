@@ -1,15 +1,11 @@
-import express, { Application, NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import redis from "redis";
 import { promisifyAll } from "bluebird";
 
-import { currentConfig as config } from "./config/index";
-import { handleError, NotFoundError } from "./util/httpError";
-
-import { authRouter, noteRouter, folderRouter } from "./routes/routeIndex";
 import { logger } from "./util/logger";
 import { createTypeOrmConnection } from "./util/typeOrmConnection";
 import { app } from "app";
+import { MQService } from "services/MQservice";
 
 dotenv.config();
 
@@ -25,7 +21,7 @@ async function connectDb() {
       // .then(
       //   async (conn) => await conn.runMigrations()
       // );
-      logger.info("Test database connected");
+      logger.debug("Test database connected");
     } else {
       await createTypeOrmConnection().then(
         async (conn) => await conn.runMigrations()
@@ -37,10 +33,24 @@ async function connectDb() {
   }
 }
 
+const connectMq = async () => {
+  try {
+    await mqSvc.createMqConnection().then((val) => {
+      console.log(val);
+    });
+  } catch (error) {
+    logger.error(error);
+  }
+};
+
 promisifyAll(redis);
 
 // const redisClient = redis.createClient({ host: REDIS_HOST, port: REDIS_PORT });
 
+const mqSvc = MQService.getInstance();
+
 connectDb();
+
+connectMq();
 
 app;

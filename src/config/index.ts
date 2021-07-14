@@ -10,6 +10,7 @@ interface conf {
     redisPort?: number;
     redisHost?: string;
     jwtLife?: string | number;
+    rabbitMqUrl?: string;
   };
   db: {
     HOST?: string;

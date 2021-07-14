@@ -9,6 +9,7 @@ const defaultConfig: conf = {
     redisPort: parseInt(process.env.REDIS_PORT as string),
     redisHost: process.env.REDIS_HOST as string,
     jwtLife: process.env.JWT_LIFE,
+    rabbitMqUrl: process.env.RABBIT_MQ_URL
   },
   db: {
     HOST: process.env.MYSQL_HOST,

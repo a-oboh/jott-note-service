@@ -4,11 +4,10 @@ import redis from "redis";
 import { promisifyAll } from "bluebird";
 
 import { currentConfig as config } from "./config/index";
-import { handleError, NotFoundError } from "./util/httpError";
+import { handleError } from "./util/httpError";
 
-import { authRouter, noteRouter, folderRouter } from "./routes/routeIndex";
+import { noteRouter, folderRouter } from "./routes/routeIndex";
 import { logger } from "./util/logger";
-import { createTypeOrmConnection } from "./util/typeOrmConnection";
 
 dotenv.config();
 
@@ -31,7 +30,6 @@ app.get("/", (_req: Request, res: Response) =>
   res.send("<h1>jott API v1.0 🤙🏽 🤙🏽</h1>")
 );
 
-app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/note", noteRouter);
 app.use("/api/v1/folder", folderRouter);
 
