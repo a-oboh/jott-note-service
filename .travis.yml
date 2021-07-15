@@ -16,7 +16,7 @@ services:
   - docker
 
 before_script:
-  - make build
+  - make docker-up-build
 
 script:
   - make docker-up-test
