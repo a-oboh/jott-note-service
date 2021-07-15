@@ -1,0 +1,25 @@
+sudo: required
+
+language: node_js
+
+env:
+  - PORT=6030
+  - REDIS_PORT=6379
+  - REDIS_HOST='redis'
+  - NODE_ENV='test'
+  - LOG_LEVEL=info
+
+node_js:
+  - 14
+
+services:
+  - docker
+
+before_script:
+  - make build
+
+script:
+  - make docker-up-test
+
+after_script:
+  - docker-compose down

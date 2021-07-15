@@ -15,9 +15,7 @@ export class NoteService {
   private noteRepo: Repository<Note>;
 
   private findNoteById = async (id: string) => {
-    const noteRepo = getRepository(Note);
-
-    const note = await noteRepo.findOne(id);
+    const note = await this.noteRepo.findOne(id);
 
     if (!note) {
       throw new HttpError(`note with id ${id} not found`, 404);

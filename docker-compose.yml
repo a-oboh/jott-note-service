@@ -1,0 +1,41 @@
+version: "3.7"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    env_file:
+    - docker.env
+    ports: 
+    - 8030:8030
+    volumes:
+    - ./:/usr/app
+    image: jott-note-service
+    depends_on:
+    - db
+    command: npm run dev
+
+  # redis:
+  #   container_name: redis
+  #   image: redis
+  #   ports:
+  #   - "63791:6379"
+  #   volumes:
+  #   - redisdata:/data
+  db:
+    image: mysql
+    # restart: always
+    env_file:
+    - docker.env
+    ports:
+    - '33061:3306'
+    expose:
+    - '33061'
+    volumes:
+    - data-db:/var/lib/mysql
+
+
+volumes:
+  # redisdata:
+  data-db:

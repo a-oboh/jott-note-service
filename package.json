@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node dist/index.js | ./node_modules/.bin/pino-pretty",
-    "dev": "nodemon --exec LOG_LEVEL=debug ts-node --files -r tsconfig-paths/register src/index.ts | pino-colada",
+    "start": "NODE_ENV=production tsc && node dist/index.js | ./node_modules/.bin/pino-pretty",
+    "dev": "NODE_ENV=development nodemon --exec LOG_LEVEL=debug ts-node --files -r tsconfig-paths/register src/index.ts | pino-colada",
     "test-server": "NODE_ENV=test ts-node --files -r tsconfig-paths/register src/index.ts",
     "build": "tsc --project ./",
-    "test": "NODE_ENV=test PORT=20 jest --runInBand --force-exit",
-    "test:unit": "NODE_ENV=test PORT=20 jest unit --runInBand",
-    "test:integration": "NODE_ENV=test PORT=20 jest int --runInBand",
+    "test": "NODE_ENV=test PORT=30 jest --runInBand --force-exit",
+    "test:unit": "NODE_ENV=test PORT=30 jest unit --runInBand",
+    "test:integration": "NODE_ENV=test PORT=30 jest int --runInBand",
     "test:coverage": "jest --coverage",
     "lint": "eslint . --ext .ts",
     "typeorm:cli": "NODE_ENV=default ts-node ./node_modules/typeorm/cli"

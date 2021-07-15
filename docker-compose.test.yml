@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  app:
+    build:
+      target: test
+    image: jott-api-test
+    ports:
+    - 30:30
+    depends_on:
+    - db
+    command: npm run test:unit
+
+  db:
+    environment:
+    - MYSQL_USER=$MYSQL_USER
+    - MYSQL_PASSWORD=$MYSQL_PASSWORD
+    - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+    - MYSQL_DATABASE=$TEST_DB
+
