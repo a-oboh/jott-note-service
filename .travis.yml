@@ -19,12 +19,9 @@ jobs:
       name: "Unit Tests"
       env:
       - NODE_ENV='test' LOG_LEVEL=info
-      script: - make docker-up-test
+      script: make docker-cp-up-test
       # name: "Integration Tests"
       # script: ./test 2
-
-after_success:
-  - bash ./deploy.sh
 
 before_install:
 - openssl aes-256-cbc -K $encrypted_0424036f5e0e_key -iv $encrypted_0424036f5e0e_iv
@@ -41,4 +38,4 @@ deploy:
  - provider: script
    script: bash script/deploy_staging.sh
    on:
-      branch: staging
+      branch: dev
