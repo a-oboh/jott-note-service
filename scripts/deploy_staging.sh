@@ -1,3 +1,4 @@
+#!/bin/bash
 set -xe
 
 ssh -i ./staging_deploy_key albert@$STAGING_SERVER

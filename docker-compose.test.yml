@@ -9,6 +9,7 @@ services:
     depends_on:
     - db
     command: npm run test:unit
+    tty: true
 
   db:
     environment:
