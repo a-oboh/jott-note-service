@@ -6,7 +6,7 @@ import { NoteService } from "../services/notes/noteService";
 import { RedisService } from "../services/redis/redisService";
 import { cacheRequest } from "../util/cache";
 import paginate from "../util/paginate";
-import { bodyEmpty } from "util/util";
+import { bodyEmpty } from "../util/util";
 
 export class NoteController {
   constructor(

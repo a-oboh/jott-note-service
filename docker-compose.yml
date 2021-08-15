@@ -5,13 +5,15 @@ services:
       context: .
       dockerfile: Dockerfile
       target: base
+    restart: unless-stopped
     env_file:
     - docker.env
-    ports: 
-    - 8030:8030
+    ports:
+    - 6030:6030
     volumes:
-    - ./:/usr/app
-    image: jott-note-service
+      - ./:/usr/app
+      - /usr/app/node_modules/
+    image: alberry/jott-note-service
     depends_on:
     - db
     command: npm run dev
@@ -26,8 +28,13 @@ services:
   db:
     image: mysql
     # restart: always
-    env_file:
-    - docker.env
+    # env_file:
+    # - docker.env
+    environment:
+    - MYSQL_USER=$MYSQL_USER
+    - MYSQL_PASSWORD=$MYSQL_PASSWORD
+    - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+    - MYSQL_DATABASE=$MYSQL_DATABASE
     ports:
     - '33061:3306'
     expose:

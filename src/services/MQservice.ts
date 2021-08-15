@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as amqp from "amqplib/callback_api";
-import { logger } from "util/logger";
-import { consumeUserCreated, QueueEnum } from "util/MQutil";
-import { currentConfig as config, currentConfig } from "../config/index";
+import { logger } from "../util/logger";
+import { consumeUserCreated, QueueEnum } from "../util/MQutil";
+import { currentConfig } from "../config/index";
 
 export class MQService {
   CONN_URL = currentConfig.app.rabbitMqUrl;

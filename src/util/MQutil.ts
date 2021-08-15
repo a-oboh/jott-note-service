@@ -1,7 +1,6 @@
 import { Channel } from "amqplib/callback_api";
-import { AuthService } from "services/auth/authService";
-import { MQService } from "services/MQservice";
-import { UserService } from "services/userService";
+import { AuthService } from "../services/auth/authService";
+import { UserService } from "../services/userService";
 import { logger } from "./logger";
 
 // const mqSvc = MQService.getInstance();

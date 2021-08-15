@@ -1,20 +1,44 @@
-sudo: required
 language: node_js
 env:
-  - PORT=6030 REDIS_PORT=6379 REDIS_HOST='redis' NODE_ENV='test' LOG_LEVEL=info
-
+- PORT=6030 REDIS_PORT=6379 REDIS_HOST='redis' NODE_ENV='test' LOG_LEVEL=info
 node_js:
-  - 14
+- 14
+addons:
+  ssh_known_hosts: $STAGING_SERVER
 services:
-  - docker
-# before_script:
-# - make docker-up-build
-script:
-  - make docker-up-test
-after_script:
-  - docker-compose down
+- docker
+
+# script:
+# - make docker-up-test
+# after_script:
+# - docker-compose down
+
+jobs:
+  include:
+    - stage: "Tests"
+      name: "Unit Tests"
+      env:
+      - NODE_ENV='test' LOG_LEVEL=info
+      script: - make docker-up-test
+      # name: "Integration Tests"
+      # script: ./test 2
+
+after_success:
+  - bash ./deploy.sh
+
 before_install:
-  - openssl aes-256-cbc -K $encrypted_3c84dcdc6bbe_key -iv $encrypted_3c84dcdc6bbe_iv
-    -in .env.enc -out .env -d
-  - openssl aes-256-cbc -K $encrypted_d4c3a8cdf63e_key -iv $encrypted_d4c3a8cdf63e_iv
-    -in docker.env.enc -out docker.env -d
+- openssl aes-256-cbc -K $encrypted_0424036f5e0e_key -iv $encrypted_0424036f5e0e_iv
+  -in staging_deploy_key.enc -out ./staging_deploy_key -d
+- openssl aes-256-cbc -K $encrypted_3c84dcdc6bbe_key -iv $encrypted_3c84dcdc6bbe_iv
+  -in .env.enc -out .env -d
+- openssl aes-256-cbc -K $encrypted_d4c3a8cdf63e_key -iv $encrypted_d4c3a8cdf63e_iv
+  -in docker.env.enc -out docker.env -d
+- chmod 600 staging_deploy_key
+- eval "$(ssh-agent -s)"
+- echo -e "Host $STAGING_SERVER\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+deploy:
+ - provider: script
+   script: bash script/deploy_staging.sh
+   on:
+      branch: staging
