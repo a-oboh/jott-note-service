@@ -8,10 +8,10 @@ addons:
 services:
 - docker
 
-# script:
-# - make docker-up-test
-# after_script:
-# - docker-compose down
+script:
+- make docker-cp-up-test
+after_script:
+- docker-compose down
 
 # jobs:
 #   include:
@@ -20,8 +20,8 @@ services:
 #       env:
 #       - NODE_ENV='test'
 #       script: make docker-cp-up-test
-      # name: "Integration Tests"
-      # script: ./test 2
+#       name: "Integration Tests"
+#       script: ./test 2
 
 before_install:
 - openssl aes-256-cbc -K $encrypted_0424036f5e0e_key -iv $encrypted_0424036f5e0e_iv
@@ -33,9 +33,6 @@ before_install:
 - chmod 600 staging_deploy_key
 - eval "$(ssh-agent -s)"
 - echo -e "Host $STAGING_SERVER\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
-before_deploy:
-  script: make docker-cp-up-test
 
 deploy:
  - provider: script
