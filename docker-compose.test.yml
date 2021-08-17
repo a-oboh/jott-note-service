@@ -9,7 +9,6 @@ services:
     depends_on:
     - db
     command: npm run test:unit
-    stdin_open: true
 
   db:
     environment:
