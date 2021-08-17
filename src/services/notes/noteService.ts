@@ -9,9 +9,10 @@ export class NoteService {
     if (!noteRepository) {
       createTypeOrmConnection().then((conn) => {
         this.noteRepo = conn.getRepository(Note);
-      })
-      this.noteRepo = noteRepository;
+      });
     }
+
+    this.noteRepo = noteRepository;
   }
 
   private noteRepo: Repository<Note>;
