@@ -35,7 +35,7 @@ before_install:
 - echo -e "Host $STAGING_SERVER\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
 before_deploy:
-  - make docker-cp-up-test
+  script: make docker-cp-up-test
 
 deploy:
  - provider: script
