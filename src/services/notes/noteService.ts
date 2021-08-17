@@ -12,7 +12,7 @@ export class NoteService {
       });
     }
 
-    // this.noteRepo = noteRepository;
+    this.noteRepo = noteRepository;
   }
 
   private noteRepo: Repository<Note>;
