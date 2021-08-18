@@ -35,7 +35,9 @@ before_install:
 - echo -e "Host $STAGING_SERVER\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
 deploy:
- - provider: script
-   script: bash script/deploy_staging.sh
+- ssh -i ./staging_deploy_key albert@$STAGING_SERVER
+- git checkout dev
+- git pull origin dev
+- docker-compose up -d 
    on:
       branch: dev
