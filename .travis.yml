@@ -37,6 +37,6 @@ before_install:
 
 deploy:
  - provider: script
-   script: ssh -i ./staging_deploy_key albert@$STAGING_SERVER && git checkout dev && git pull origin dev && docker-compose up -d
+   script: bash scripts/deploy_staging.sh
    on:
       branch: bugfix/deploy-script-fix
