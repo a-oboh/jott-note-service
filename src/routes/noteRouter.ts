@@ -2,15 +2,13 @@ import { Router } from "express";
 import { requireAuth } from "../middleware/authMiddleware";
 import checkIdempotentKey from "../middleware/idempotencyMiddleware";
 import { NoteController } from "../controllers/noteController";
-import { NoteService } from "services/notes/noteService";
-import { UserService } from "services/userService";
-import { RedisService } from "services/redis/redisService";
-import { getRepository } from "typeorm";
-import { Note } from "entities/note";
+import { NoteService } from "../services/notes/noteService";
+import { UserService } from "../services/userService";
+import { RedisService } from "../services/redis/redisService";
 
 export const noteRouter = Router();
 
-const noteSvc = new NoteService(getRepository(Note));
+const noteSvc = new NoteService();
 const userService: UserService = new UserService();
 const redisService: RedisService = new RedisService();
 

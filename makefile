@@ -1,10 +1,10 @@
-docker-up:
+docker-cp-up:
 	docker-compose up -d
-docker-up-build:
+docker-cp-build:
 	docker-compose build
-docker-up-prod:
-	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
-docker-up-test:
-	docker-compose -f docker-compose.yml -f docker-compose.test.yml up
-docker-down: 
+docker-cp-up-prod:
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+docker-cp-up-test:
+	docker-compose -f docker-compose.yml -f docker-compose.test.yml up --exit-code-from app app
+docker-cp-down: 
 	docker-compose down

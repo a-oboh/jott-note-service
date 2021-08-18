@@ -1,14 +1,17 @@
 import { User } from "../../entities/user";
-import { getRepository, Repository, getManager, getConnection } from "typeorm";
+import { getRepository, Repository, getManager } from "typeorm";
 import { Note } from "../../entities/note";
 import { HttpError } from "../../util/httpError";
+import { createTypeOrmConnection } from "../../util/typeOrmConnection";
 
 export class NoteService {
-  // constructor(noteRepo: Repository<Note>) {
-  //   this.noteRepo = noteRepo;
-  // }
+  constructor(noteRepository?: Repository<Note>) {
+    if (!noteRepository) {
+      createTypeOrmConnection().then((conn) => {
+        this.noteRepo = conn.getRepository(Note);
+      });
+    }
 
-  constructor(noteRepository: Repository<Note>) {
     this.noteRepo = noteRepository;
   }
 

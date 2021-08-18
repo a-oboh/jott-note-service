@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production tsc && node dist/index.js | ./node_modules/.bin/pino-pretty",
+    "start": "NODE_ENV=production tsc && node -r tsconfig-paths/register dist/index.js | ./node_modules/.bin/pino-pretty",
     "dev": "NODE_ENV=development nodemon --exec LOG_LEVEL=debug ts-node --files -r tsconfig-paths/register src/index.ts | pino-colada",
     "test-server": "NODE_ENV=test ts-node --files -r tsconfig-paths/register src/index.ts",
-    "build": "tsc --project ./",
+    "build": "rm -rf ./dist && tsc",
     "test": "NODE_ENV=test PORT=30 jest --runInBand --force-exit",
     "test:unit": "NODE_ENV=test PORT=30 jest unit --runInBand",
     "test:integration": "NODE_ENV=test PORT=30 jest int --runInBand",

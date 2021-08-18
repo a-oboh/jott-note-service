@@ -4,33 +4,39 @@ import { promisifyAll } from "bluebird";
 
 import { logger } from "./util/logger";
 import { createTypeOrmConnection } from "./util/typeOrmConnection";
-import { app } from "app";
-import { MQService } from "services/MQservice";
+import { app } from "./app";
+import { MQService } from "./services/MQservice";
+import { Connection } from "typeorm";
 
 dotenv.config();
 
-async function connectDb() {
-  try {
-    if (process.env.NODE_ENV == "development") {
-      await createTypeOrmConnection().then(
-        async (conn) => await conn.runMigrations()
-      );
-      logger.debug("Dev database connected");
-    } else if (process.env.NODE_ENV == "test") {
-      // await createTypeOrmConnection()
-      // .then(
-      //   async (conn) => await conn.runMigrations()
-      // );
-      logger.debug("Test database connected");
-    } else {
-      await createTypeOrmConnection().then(
-        async (conn) => await conn.runMigrations()
-      );
-      logger.debug("Database connected");
+async function connectDb(): Promise<Connection> {
+  return new Promise<Connection>((resolve, reject) => {
+    try {
+      if (process.env.NODE_ENV == "development") {
+        createTypeOrmConnection().then(async (conn) => {
+          await conn.runMigrations();
+          resolve(conn);
+        });
+        logger.debug("Dev database connected");
+      } else if (process.env.NODE_ENV == "test") {
+        // await createTypeOrmConnection()
+        // .then(
+        //   async (conn) => await conn.runMigrations()
+        // );
+        logger.debug("Test database connected");
+      } else {
+        createTypeOrmConnection().then(async (conn) => {
+          await conn.runMigrations();
+          resolve(conn);
+        });
+        logger.debug("Database connected");
+      }
+    } catch (error) {
+      logger.error(error);
+      reject(error)
     }
-  } catch (error) {
-    logger.error(error);
-  }
+  });
 }
 
 const connectMq = async () => {
@@ -43,14 +49,20 @@ const connectMq = async () => {
   }
 };
 
-promisifyAll(redis);
-
 // const redisClient = redis.createClient({ host: REDIS_HOST, port: REDIS_PORT });
 
 const mqSvc = MQService.getInstance();
 
-connectDb();
+connectDb()
+  .then((conn) => {
+    app;
+  })
+  .catch((error) => {
+    logger.error(error);
+  });
 
 connectMq();
 
-app;
+// app;
+
+export { connectDb };

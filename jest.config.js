@@ -8,7 +8,7 @@ module.exports = {
   // moduleFileExtensions: [
   //   "js",
   //   // "json",
-  //   "jsx",
+  //   // "jsx",
   //   "ts",
   //   "tsx",
   //   // "node"
@@ -21,5 +21,5 @@ module.exports = {
   //   '^index$': '<rootDir>/src/index',
   // },
 
-  // roots: ["<rootDir>/src", "<rootDir>/dist"],
+  roots: ["<rootDir>/src"],
 };

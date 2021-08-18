@@ -1,5 +1,5 @@
-import { Note } from "entities/note";
-import { NoteService } from "services/notes/noteService";
+import { Note } from "../../../entities/note";
+import { NoteService } from "../../../services/notes/noteService";
 import { Repository } from "typeorm";
 import * as typeorm from "typeorm";
 
