@@ -39,4 +39,4 @@ deploy:
  - provider: script
    script: bash scripts/deploy_staging.sh
    on:
-      branch: bugfix/deploy-script-fix
+      branch: dev

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -xe
 
-ssh -i ./staging_deploy_key albert@$STAGING_SERVER
+ssh albert@$STAGING_SERVER
 cd jott-note-service
 git fetch
 git checkout dev
