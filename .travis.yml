@@ -30,12 +30,13 @@ before_install:
   -in .env.enc -out .env -d
 - openssl aes-256-cbc -K $encrypted_d4c3a8cdf63e_key -iv $encrypted_d4c3a8cdf63e_iv
   -in docker.env.enc -out docker.env -d
-- chmod 600 staging_deploy_key
+- chmod 600 ./staging_deploy_key
 - eval "$(ssh-agent -s)"
 - echo -e "Host $STAGING_SERVER\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+- ssh-add ./staging_deploy_key
 
 deploy:
  - provider: script
-   script: bash script/deploy_staging.sh
+   script: bash scripts/deploy_staging.sh
    on:
       branch: dev
